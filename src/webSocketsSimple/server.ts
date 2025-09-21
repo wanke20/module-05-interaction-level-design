@@ -7,6 +7,8 @@ const corsParams = {
   methods: ["GET", "POST"],
 };
 
+var numConnectedClients: number = 0;
+
 export default function createServer() {
   const httpServer = createHttpServer();
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(
@@ -15,6 +17,10 @@ export default function createServer() {
   );
   io.on("connection", (socket) => {
     console.log("server reports new connection");
+
+    numConnectedClients += 1;
+    console.log("> " + numConnectedClients);
+    
     startServerHandlers(socket);
   });
   console.log("server.ts: Listening on port 8080");
@@ -34,6 +40,9 @@ function startServerHandlers(
     } else {
       console.log(`server disconnecting ${clientName} after 5 pings`);
       socket.disconnect();
+      numConnectedClients -= 1;
+
+      console.log("> " + numConnectedClients);
     }
   });
 
