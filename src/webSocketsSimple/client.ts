@@ -24,7 +24,7 @@ function startClientHandlers(
     // system starts by sending 'connect'
     socket.on('connect', () => {
         console.log(`${clientName} connected to server on ${clientURL}`);
-        socket.emit('hello', `hello, ${clientName}`);
+        socket.emit('hello', clientName);
     });
 
     socket.on('ping', (n: number) => {
